@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AgGridAngular } from 'ag-grid-angular';
 import type { ColDef, GetRowIdFunc, GetRowIdParams, GridApi, GridOptions, GridReadyEvent, Theme } from 'ag-grid-community';
@@ -9,9 +9,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { DeleteConfirmationDialogComponent } from '../../components/delete-dialog/delete-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
+import { FormField, GenericFormComponent } from '../../components/generic-form/generic-form.component';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -139,7 +140,13 @@ export class LmComponent {
     },
     {
       field: "edit", headerName: "", width: 30,
-      cellRenderer: (params: any) => `<i class="fa-solid fa-pen-to-square" style="cursor: pointer;"></i>`
+      cellRenderer: (params: any) => {
+        const icon = document.createElement('i');
+        icon.classList.add('fa-solid', 'fa-pen-to-square');
+        icon.style.cursor = 'pointer';
+        icon.addEventListener('click', () => this.openEditDialog(params));
+        return icon;
+      }
     },
     {
       field: "delete", headerName: "", width: 30,
@@ -184,11 +191,98 @@ export class LmComponent {
     });
   }
 
+  openEditDialog(params: any): void {
+    const dialogRef = this.dialog.open(EditLmDialogComponent, {
+      data: params.data
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // handle me
+      }
+    });
+  }
+
   create() {
     this.router.navigate(['/creation-lettre-de-mission']);
   }
 
   navigate() {
     this.router.navigate(['/lettre-de-mission']);
+  }
+}
+
+
+@Component({
+  selector: 'app-edit-lm-dialog',
+  standalone: true,
+  imports: [CommonModule, MatButtonModule, GenericFormComponent],
+  template: `
+    <div class="edit-dialog">
+        <h3>Modification de lettre de mission</h3>
+        <app-generic-form [fields]="formFields" (submitForm)="handleForm($event)"></app-generic-form>
+    </div>
+  `,
+  styleUrls: ['./lm.component.scss']
+})
+export class EditLmDialogComponent {
+  formFields: FormField[] = [
+    {
+      name: "clientNumber",
+      label: "N° Client",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "clientName",
+      label: "Client",
+      type: "text",
+      required: true,
+    },
+    { name: '', type: 'ghost' },
+    {
+      name: "signatureDate",
+      label: "Date de signature",
+      type: "date",
+    },
+    {
+      name: "amount",
+      label: "Montant HT",
+      type: "number",
+    },
+    {
+      name: "state",
+      label: "Etat",
+      type: "select",
+      required: true,
+      options: [
+        { value: "Signé", label: "Signé" },
+        { value: "En attente", label: "En attente" },
+        { value: "Refusé", label: "Refusé" }
+      ]
+    },
+  ];
+
+  @ViewChild('firstInput') firstInput!: ElementRef;
+
+  constructor(public dialogRef: MatDialogRef<EditLmDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+    for (let key in data) {
+      const idx = this.formFields.findIndex(e => e.name === key);
+      if (Object.hasOwn(data, key) && idx > -1) {
+        this.formFields[idx].value = data[key];
+      }
+    }
+  }
+
+  onCancel(): void {
+    this.dialogRef.close(false);
+  }
+
+  onConfirm(): void {
+    this.dialogRef.close(true);
+  }
+
+  handleForm(data: any) {
+    console.log('Form submitted:', data);
   }
 }

@@ -14,6 +14,7 @@ export interface FormField {
     name: string;
     type: 'text' | 'number' | 'date' | 'select' | 'checkbox' | 'ghost';
     label?: string;
+    value?: any;
     required?: boolean;
     options?: { label: string; value: any }[];
 }
@@ -40,7 +41,7 @@ export class GenericFormComponent {
 
         this.fields.forEach((field) => {
             group[field.name] = [
-                '',
+                field.type === 'checkbox' ? (field.value || false) : (field.value || ''),
                 field.required ? Validators.required : []
             ];
         });
