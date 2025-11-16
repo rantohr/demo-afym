@@ -1,1 +1,38 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+@include mat.core();
+
+$demo-afym-primary: mat.define-palette(mat.$teal-palette, 500, 300, 700);
+$demo-afym-accent: mat.define-palette(mat.$cyan-palette, 500, 300, 700);
+$demo-afym-warn: mat.define-palette(mat.$red-palette);
+
+$demo-afym-theme: mat.define-light-theme((color: (primary: $demo-afym-primary,
+                accent: $demo-afym-accent,
+                warn: $demo-afym-warn,
+            ),
+            typography: mat.define-typography-config(),
+            density: 0));
+
+@include mat.all-component-themes($demo-afym-theme);
+
+:root {
+    --primary-color: #00576e;
+    --accent-color: #006b7a;
+    --light-color: #65a397;
+    --very-light-grey: #f2f7f8;
+    --light-grey: #96999a;
+    --grey: #606060;
+}
+
+* {
+    transition: 0.3s;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
