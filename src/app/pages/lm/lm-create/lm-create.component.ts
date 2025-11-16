@@ -13,23 +13,42 @@ import { FormField, GenericFormComponent } from '../../../components/generic-for
 export class LmCreateComponent {
 
   formFields: FormField[] = [
-    { name: 'firstName', label: 'First Name', type: 'text', required: true },
-    { name: 'age', label: 'Age', type: 'number' },
-    { name: 'birthDate', label: 'Birth Date', type: 'date' },
     {
-      name: 'country',
-      label: 'Country',
-      type: 'select',
-      options: [
-        { label: 'France', value: 'fr' },
-        { label: 'Madagascar', value: 'mg' },
-        { label: 'Japan', value: 'jp' },
-      ],
+      name: "clientNumber",
+      label: "N° Client",
+      type: "number",
+      required: true,
     },
-    { name: 'ghost1', type: 'ghost' },
-    { name: 'ghost2', type: 'ghost' },
-    { name: 'subscribe', label: 'Subscribe to newsletter', type: 'checkbox' },
+    {
+      name: "clientName",
+      label: "Client",
+      type: "text",
+      required: true,
+    },
+    { name: '', type: 'ghost' },
+    {
+      name: "signatureDate",
+      label: "Date de signature",
+      type: "date",
+    },
+    {
+      name: "amount",
+      label: "Montant HT",
+      type: "number",
+    },
+    {
+      name: "state",
+      label: "Etat",
+      type: "select",
+      required: true,
+      options: [
+        { value: "Signé", label: "Signé" },
+        { value: "En attente", label: "En attente" },
+        { value: "Refusé", label: "Refusé" }
+      ]
+    },
   ];
+
 
   constructor(private router: Router) { }
 
