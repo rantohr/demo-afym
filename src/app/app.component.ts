@@ -13,5 +13,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'demo-afym';
+  showMenu = true;
+  showCrm = true;
 }

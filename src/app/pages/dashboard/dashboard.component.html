@@ -1,0 +1,17 @@
+<h1>Tableau de bord</h1>
+<div class="graphs-container">
+  <div class="card" *ngFor="let item of factureCharts">
+    <h2 class="card-title">{{ item.title }}</h2>
+    <div class="card-content">
+      <ag-charts style="height: 100%" [options]="item.chart"></ag-charts>
+    </div>
+  </div>
+</div>
+<div class="graphs-container">
+  <div class="card" style="width: -webkit-fill-available;">
+    <h2 class="card-title">Variation Trésorerie</h2>
+    <div class="card-content">
+      <ag-charts style="height: 100%" [options]="tresorerieChart"></ag-charts>
+    </div>
+  </div>
+</div>
