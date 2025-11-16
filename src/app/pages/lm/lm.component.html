@@ -1,1 +1,15 @@
 <h1>Lettre de mission</h1>
+
+<mat-form-field appearance="outline">
+  <mat-label>Filtre par état</mat-label>
+  <mat-select [(ngModel)]="selectedEtat" (selectionChange)="onFilter()">
+    @for (item of states; track item) {
+    <mat-option [value]="item">{{item}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<div class="grid-container">
+  <ag-grid-angular [rowData]="rowData" [columnDefs]="colDefs" [pagination]="true" [paginationPageSize]="20"
+    [rowHeight]="50" [domLayout]="'autoHeight'" [gridOptions]="gridOptions" [localeText]="localeText"
+    (gridReady)="onGridReady($event)" style="width: 100%;" />
+</div>
