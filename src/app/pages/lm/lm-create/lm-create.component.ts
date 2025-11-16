@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-lm-create',
@@ -10,4 +11,9 @@ import { CommonModule } from '@angular/common';
 })
 export class LmCreateComponent {
 
+  constructor(private router: Router) { }
+
+  navigate() {
+    this.router.navigate(['/lettre-de-mission']);
+  }
 }

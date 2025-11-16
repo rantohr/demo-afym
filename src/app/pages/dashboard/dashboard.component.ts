@@ -7,6 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import { FormControl, FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,7 +24,7 @@ export class DashboardComponent {
   selectedLevel = 'Admin';
   dateRange = { start: new Date('2025-01-01'), end: new Date('2025-12-31') };
 
-  constructor() {
+  constructor(private router: Router) {
     this.factureCharts = [
       {
         title: 'Tenue Comptable & Fiscale', chart: {
@@ -99,5 +100,9 @@ export class DashboardComponent {
       ]
     };
 
+  }
+
+  navigate() {
+    this.router.navigate(['/']);
   }
 }

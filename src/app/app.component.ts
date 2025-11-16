@@ -15,9 +15,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 export class AppComponent {
   showMenu = true;
   showCrm = true;
-  activeMenu = 'dashboard';
-
-  constructor(private router: Router) {}
 
   sidebarItems = [
     {
@@ -66,6 +63,10 @@ export class AppComponent {
     }
   ];
 
+  activeMenu: any = this.sidebarItems[0];
+
+  constructor(private router: Router) { }
+
   toggleCrm() {
     this.showCrm = !this.showCrm;
     this.sidebarItems[1].showSubItems = this.showCrm;
@@ -73,7 +74,7 @@ export class AppComponent {
 
   setActiveMenu(item: any) {
     if (item.disabled) return;
-    this.activeMenu = item.id;
-    this.router.navigate([item.link]);  
+    this.activeMenu = item;
+    this.router.navigate([item.link]);
   }
 }

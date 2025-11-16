@@ -187,4 +187,8 @@ export class LmComponent {
   create() {
     this.router.navigate(['/creation-lettre-de-mission']);
   }
+
+  navigate() {
+    this.router.navigate(['/lettre-de-mission']);
+  }
 }

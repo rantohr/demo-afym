@@ -23,7 +23,7 @@
           [class]="showMenu ? 'fa-solid fa-chevron-left' : 'fa-solid fa-chevron-right'"></i></button>
       <div *ngFor="let item of sidebarItems">
         <div *ngIf="!item.subItems" class="sidebar-item" [style.cursor]="item.disabled ? 'not-allowed' : 'pointer'"
-          [style.backgroundColor]="item.id === activeMenu ? '#65a3975c' : ''" (click)="setActiveMenu(item)">
+          [style.backgroundColor]="item.id === activeMenu.id ? '#65a3975c' : ''" (click)="setActiveMenu(item)">
           <i [class]="item.icon"></i>
           <span>{{ item.label }}</span>
         </div>
