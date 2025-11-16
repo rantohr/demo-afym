@@ -1,26 +1,31 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AgGridAngular } from 'ag-grid-angular';
-import type { ColDef, GetRowIdFunc, GetRowIdParams, GridApi, GridOptions, GridReadyEvent } from 'ag-grid-community';
-import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
+import type { ColDef, GetRowIdFunc, GetRowIdParams, GridApi, GridOptions, GridReadyEvent, Theme } from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry, themeQuartz } from "ag-grid-community";
 import { AG_GRID_LOCALE_FR } from "@ag-grid-community/locale";
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 @Component({
   selector: 'app-lm',
   standalone: true,
-  imports: [CommonModule, AgGridAngular, FormsModule, MatFormFieldModule, MatSelectModule],
+  imports: [CommonModule, AgGridAngular, FormsModule, MatFormFieldModule, MatSelectModule, MatTabsModule],
   templateUrl: './lm.component.html',
   styleUrl: './lm.component.scss'
 })
 export class LmComponent {
   selectedEtat = 'Tous';
   states = ['Tous', 'Signé', 'En attente', 'Perdu'];
+  missions = ['Comptable', 'Fiscale', 'Sociale', 'Juridique', 'Exceptionnelle'];
 
+  theme: Theme | "legacy" = themeQuartz.withParams({
+    accentColor: "#006b7a",
+  });
   localeText: {
     [key: string]: string;
   } = AG_GRID_LOCALE_FR;
@@ -40,7 +45,7 @@ export class LmComponent {
       creationDate: '2025-01-15',
       state: 'Signé',
       signatureDate: '2025-01-18',
-      amount: 12000.50
+      amount: 120.00
     },
     {
       clientNumber: '002',
@@ -48,7 +53,7 @@ export class LmComponent {
       creationDate: '2025-02-20',
       state: 'Signé',
       signatureDate: '2025-02-22',
-      amount: 4500.75
+      amount: 450.00
     },
     {
       clientNumber: '003',
@@ -56,7 +61,7 @@ export class LmComponent {
       creationDate: '2025-03-05',
       state: 'En attente',
       signatureDate: '2025-03-07',
-      amount: 9800.00
+      amount: 900.00
     },
     {
       clientNumber: '004',
@@ -64,7 +69,7 @@ export class LmComponent {
       creationDate: '2025-04-10',
       state: 'Perdu',
       signatureDate: '2025-04-12',
-      amount: 15000.30
+      amount: 300.00
     },
     {
       clientNumber: '005',
@@ -72,7 +77,7 @@ export class LmComponent {
       creationDate: '2025-05-01',
       state: 'En attente',
       signatureDate: '2025-05-03',
-      amount: 7800.00
+      amount: 700.00
     }
   ];
 
@@ -91,14 +96,50 @@ export class LmComponent {
       field: "creationDate", headerName: "Date de création", cellRenderer: (params: any) => params.value.split('-').reverse().join('/'),
       filter: "agDateColumnFilter", flex: 1
     },
-    { field: "state", headerName: "Etat", flex: 1 },
+    {
+      field: "state", headerName: "Etat", flex: 1,
+      cellRenderer: (params: any) => {
+        let color = '#b00000';
+        let emoji = '❌';
+        switch (params.value) {
+          case 'Signé':
+            color = '#008500';
+            emoji = '✅';
+            break;
+            case 'En attente':
+              color = '#767676';
+              emoji = '⌛';
+            break;
+          default:
+            color = '#b00000';
+            break;
+        }
+        return `<span style="border: 1px solid ${color};
+          width: 95px;
+          border-radius: 4px;
+          display: block;
+          display: flex;
+          align-items: center;
+          padding-left: 3px;
+          height: 33px;">${emoji} ${params.value}</span>
+        `;
+      }
+    },
     {
       field: "signatureDate", headerName: "Date de signature", cellRenderer: (params: any) => params.value.split('-').reverse().join('/'),
       filter: "agDateColumnFilter", flex: 1
     },
     {
-      field: "amount", headerName: "Montant HT",
-      filter: "agNumberColumnFilter", flex: 1
+      field: "amount", headerName: "Montant HT", cellRenderer: (params: any) => `${params.value} €`,
+      filter: "agNumberColumnFilter", flex: 1,
+    },
+    {
+      field: "edit", headerName: "", width: 30,
+      cellRenderer: (params: any) => `<i class="fa-solid fa-pen-to-square" style="cursor: pointer;"></i>`
+    },
+    {
+      field: "delete", headerName: "", width: 30,
+      cellRenderer: (params: any) => `<i class="fa-solid fa-trash-can" style="cursor: pointer; color: red;"></i>`
     },
   ];
 
