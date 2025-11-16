@@ -1,0 +1,50 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-fields">
+
+    <div *ngFor="let field of fields">
+
+        <!-- Text Input -->
+        <mat-form-field *ngIf="field.type === 'text'" appearance="fill">
+            <mat-label>{{ field.label }}</mat-label>
+            <input matInput type="text" [formControlName]="field.name" />
+        </mat-form-field>
+
+        <!-- Number Input -->
+        <mat-form-field *ngIf="field.type === 'number'" appearance="fill">
+            <mat-label>{{ field.label }}</mat-label>
+            <input matInput type="number" [formControlName]="field.name" />
+        </mat-form-field>
+
+        <!-- Date Input -->
+        <mat-form-field *ngIf="field.type === 'date'" appearance="fill">
+            <mat-label>{{ field.label }}</mat-label>
+            <input matInput [matDatepicker]="picker" [formControlName]="field.name">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <!-- Select Dropdown -->
+        <mat-form-field *ngIf="field.type === 'select'" appearance="fill">
+            <mat-label>{{ field.label }}</mat-label>
+            <mat-select [formControlName]="field.name">
+                <mat-option *ngFor="let opt of field.options" [value]="opt.value">
+                    {{ opt.label }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!-- Checkbox -->
+        <mat-checkbox *ngIf="field.type === 'checkbox'" [formControlName]="field.name">
+            {{ field.label }}
+        </mat-checkbox>
+        
+        <!-- Ghost -->
+        <div *ngIf="field.type === 'ghost'" style="opacity: 0;"></div>
+
+    </div>
+
+    <div style="width: 100%;">
+        <button style="width: 200px;" mat-raised-button color="primary" type="submit">
+            Confirmer
+        </button>
+    </div>
+</form>

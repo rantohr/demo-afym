@@ -7,3 +7,7 @@
 </div>
 <h1>Création de lettre de mission</h1>
 
+<app-generic-form
+  [fields]="formFields"
+  (submitForm)="handleForm($event)"
+></app-generic-form>
