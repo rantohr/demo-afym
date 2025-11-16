@@ -21,60 +21,30 @@
     <div class="sidebar" [style.marginLeft]="showMenu ? '0px' : '-290px'">
       <button (click)="showMenu = !showMenu"><i
           [class]="showMenu ? 'fa-solid fa-chevron-left' : 'fa-solid fa-chevron-right'"></i></button>
-      <div class="sidebar-item">
-        <i class="fa-solid fa-chart-line"></i>
-        <span>Tableau de bord</span>
-      </div>
-      <div class="sidebar-item sidebar-item-disabled">
-        <i class="fa-solid fa-user-group"></i>
-        <span>CRM</span>
-        <i (click)="showCrm = !showCrm"
-          [class]="showCrm ? 'floating-chevron fa-solid fa-chevron-up' : 'floating-chevron fa-solid fa-chevron-down'"></i>
-      </div>
-      <div style="margin-left: 31px;" [style.display]="showCrm ? 'block' : 'none'">
-        <div class="sidebar-item">
-          <i class="fa-regular fa-envelope"></i>
-          <span>Email</span>
+      <div *ngFor="let item of sidebarItems">
+        <div *ngIf="!item.subItems" class="sidebar-item" [style.cursor]="item.disabled ? 'not-allowed' : 'pointer'"
+          [style.backgroundColor]="item.id === activeMenu ? '#65a3975c' : ''" (click)="setActiveMenu(item)">
+          <i [class]="item.icon"></i>
+          <span>{{ item.label }}</span>
         </div>
-        <div class="sidebar-item">
-          <i class="fa-regular fa-address-book"></i>
-          <span>Contacts</span>
+
+        <div *ngIf="item.subItems" class="sidebar-item sidebar-item-disabled">
+          <i [class]="item.icon"></i>
+          <span>{{ item.label }}</span>
+          <i (click)="toggleCrm()"
+            [class]="showCrm ? 'floating-chevron fa-solid fa-chevron-up' : 'floating-chevron fa-solid fa-chevron-down'">
+          </i>
         </div>
-        <div class="sidebar-item">
-          <i class="fa-regular fa-building"></i>
-          <span>Entreprise</span>
+
+        <div *ngIf="item.subItems && item.showSubItems" style="margin-left: 31px;">
+          <div *ngFor="let subItem of item.subItems" class="sidebar-item" style="cursor: not-allowed;">
+            <i [class]="subItem.icon"></i>
+            <span>{{ subItem.label }}</span>
+          </div>
         </div>
-        <div class="sidebar-item">
-          <i class="fa-solid fa-users"></i>
-          <span>Clients</span>
-        </div>
-        <div class="sidebar-item">
-          <i class="fa-solid fa-arrow-right-arrow-left"></i>
-          <span>Transactions</span>
-        </div>
-        <div class="sidebar-item">
-          <i class="fa-solid fa-clock"></i>
-          <span>Temps</span>
-        </div>
-      </div>
-      <div class="sidebar-item">
-        <i class="fa-regular fa-newspaper"></i>
-        <span>Lettre de mission</span>
-      </div>
-      <div class="sidebar-item">
-        <i class="fa-solid fa-file-invoice"></i>
-        <span>Facturation</span>
-      </div>
-      <div class="sidebar-item">
-        <i class="fa-solid fa-briefcase"></i>
-        <span>Production</span>
-      </div>
-      <div class="sidebar-item">
-        <i class="fa-solid fa-gear"></i>
-        <span>Paramètres</span>
       </div>
     </div>
-    <div style="width: -webkit-fill-available; padding-left: 1em;">
+    <div style="width: -webkit-fill-available; padding-top: 125px;" [style.marginLeft]="showMenu ? '315px' : '1em'">
       <router-outlet></router-outlet>
     </div>
   </div>

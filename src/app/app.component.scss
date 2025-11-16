@@ -8,6 +8,9 @@
         justify-content: space-between;
         background-color: var(--very-light-grey);
         border-bottom: 1px solid var(--light-grey);
+        position: fixed;
+        z-index: 2;
+        width: -webkit-fill-available;
 
         >:first-child {
             display: flex;
@@ -40,12 +43,14 @@
         padding: 10px;
         box-sizing: border-box;
         border-right: 1px solid var(--light-grey);
-        min-height: calc(100vh - 91px);
-        position: relative;
+        height: 100vh;
+        padding-top: 115px;
+        position: fixed;
+        z-index: 1;
 
         >button {
             position: absolute;
-            top: 10px;
+            top: 100px;
             right: -25px;
             width: 25px;
             height: 25px;
@@ -74,7 +79,7 @@
             }
 
             &:hover {
-                background-color: var(--light-color);
+                background-color: var(--light-color) !important;
                 color: white;
             }
 

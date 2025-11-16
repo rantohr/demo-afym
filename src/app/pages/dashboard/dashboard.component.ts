@@ -32,9 +32,8 @@ export class DashboardComponent {
             { asset: "Facture non-réglée", amount: 40000 }
           ],
           series: [
-            { type: "donut", angleKey: "amount", legendItemKey: "asset" },
+            { type: "donut", angleKey: "amount", legendItemKey: "asset", fills: ['#00576e', '#65a397'] },
           ],
-          theme: "ag-polychroma"
         }
       },
       {
@@ -44,7 +43,7 @@ export class DashboardComponent {
             { asset: "Facture non-réglée", amount: 40000 }
           ],
           series: [
-            { type: "donut", angleKey: "amount", legendItemKey: "asset" },
+            { type: "donut", angleKey: "amount", legendItemKey: "asset", fills: ['#00576e', '#65a397'] },
           ],
           theme: "ag-polychroma"
         }
@@ -56,7 +55,7 @@ export class DashboardComponent {
             { asset: "Facture non-réglée", amount: 86000 }
           ],
           series: [
-            { type: "donut", angleKey: "amount", legendItemKey: "asset" },
+            { type: "donut", angleKey: "amount", legendItemKey: "asset", fills: ['#00576e', '#65a397'] },
           ],
           theme: "ag-polychroma"
         }
@@ -68,7 +67,7 @@ export class DashboardComponent {
             { asset: "Facture non-réglée", amount: 11600 }
           ],
           series: [
-            { type: "donut", angleKey: "amount", legendItemKey: "asset" },
+            { type: "donut", angleKey: "amount", legendItemKey: "asset", fills: ['#00576e', '#65a397'] },
           ],
           theme: "ag-polychroma"
         }
