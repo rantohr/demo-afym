@@ -1,4 +1,26 @@
-<h1>Tableau de bord</h1>
+<div class="graphs-filter">
+  <h1>Tableau de bord</h1>
+  <div>
+    <mat-form-field appearance="outline">
+      <mat-label>Niveau</mat-label>
+      <mat-select [(value)]="selectedLevel">
+        @for (item of levels; track item) {
+        <mat-option [value]="item.value">{{item.text}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Période</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate placeholder="Début" [(ngModel)]="dateRange.start">
+        <input matEndDate placeholder="Fin" [(ngModel)]="dateRange.end">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+  </div>
+</div>
+
 <div class="graphs-container">
   <div class="card" *ngFor="let item of factureCharts">
     <h2 class="card-title">{{ item.title }}</h2>
