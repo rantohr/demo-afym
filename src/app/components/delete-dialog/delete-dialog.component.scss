@@ -7,6 +7,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    >i {
+        font-size: 100px;
+        color: var(--mat-form-field-error-text-color);
+        margin-bottom: 17px;
+    }
+
+    .confirm-delete {
+        color: white;
+        background-color: var(--mat-form-field-error-text-color);
+    }
 }
 
 h3 {

@@ -10,13 +10,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { DeleteConfirmationDialogComponent } from '../../components/delete-dialog/delete-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 @Component({
   selector: 'app-lm',
   standalone: true,
-  imports: [CommonModule, AgGridAngular, FormsModule, MatFormFieldModule, MatSelectModule, MatTabsModule],
+  imports: [CommonModule, AgGridAngular, FormsModule, MatFormFieldModule, MatSelectModule, MatTabsModule, MatButtonModule],
   templateUrl: './lm.component.html',
   styleUrl: './lm.component.scss'
 })
@@ -152,7 +154,7 @@ export class LmComponent {
     },
   ];
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private router: Router) { }
 
   ngOnInit() {
     this.rowData = JSON.parse(JSON.stringify(this.initData));
@@ -180,5 +182,9 @@ export class LmComponent {
         console.log('Deleted item at row index:', rowIndex);
       }
     });
+  }
+
+  create() {
+    this.router.navigate(['/creation-lettre-de-mission']);
   }
 }

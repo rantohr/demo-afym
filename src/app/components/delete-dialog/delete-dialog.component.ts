@@ -11,12 +11,13 @@ import { MatButtonModule } from '@angular/material/button';
     template: `
     <div class="confirm-dialog">
         <h3>Confirmation de suppression</h3>
+        <i class="fa-solid fa-triangle-exclamation"></i>
         <div>
             Etes-vous de vouloir supprimer cet élément?
         </div>
         <div style="margin-top: 1em;">
             <button mat-raised-button (click)="onCancel()" style="margin-right: 1em">Annuler</button>
-            <button mat-raised-button style="color: white; background-color: red" (click)="onConfirm()">Supprimer</button>
+            <button mat-raised-button class="confirm-delete" (click)="onConfirm()">Supprimer</button>
         </div>
     </div>
   `,

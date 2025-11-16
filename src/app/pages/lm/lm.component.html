@@ -2,14 +2,17 @@
 
 <mat-tab-group>
   <mat-tab *ngFor="let item of missions" [label]="item">
-    <mat-form-field appearance="outline" style="margin-top: 1em;">
-      <mat-label>Filtre par état</mat-label>
-      <mat-select [(ngModel)]="selectedEtat" (selectionChange)="onFilter()">
-        @for (item of states; track item) {
-        <mat-option [value]="item">{{item}}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <mat-form-field appearance="outline" style="margin-top: 1em;">
+        <mat-label>Filtre par état</mat-label>
+        <mat-select [(ngModel)]="selectedEtat" (selectionChange)="onFilter()">
+          @for (item of states; track item) {
+          <mat-option [value]="item">{{item}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <button mat-flat-button color="primary" (click)="create()">Créer une lettre de mission</button>
+    </div>
     <div class="grid-container">
       <ag-grid-angular [rowData]="rowData" [columnDefs]="colDefs" [pagination]="true" [paginationPageSize]="20"
         [rowHeight]="50" [domLayout]="'autoHeight'" [gridOptions]="gridOptions" [localeText]="localeText"
