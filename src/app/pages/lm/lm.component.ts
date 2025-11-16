@@ -8,6 +8,8 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
+import { DeleteConfirmationDialogComponent } from '../../components/delete-dialog/delete-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -106,9 +108,9 @@ export class LmComponent {
             color = '#008500';
             emoji = '✅';
             break;
-            case 'En attente':
-              color = '#767676';
-              emoji = '⌛';
+          case 'En attente':
+            color = '#767676';
+            emoji = '⌛';
             break;
           default:
             color = '#b00000';
@@ -139,9 +141,18 @@ export class LmComponent {
     },
     {
       field: "delete", headerName: "", width: 30,
-      cellRenderer: (params: any) => `<i class="fa-solid fa-trash-can" style="cursor: pointer; color: red;"></i>`
+      cellRenderer: (params: any) => {
+        const icon = document.createElement('i');
+        icon.classList.add('fa-solid', 'fa-trash-can');
+        icon.style.cursor = 'pointer';
+        icon.style.color = 'red';
+        icon.addEventListener('click', () => this.openConfirmDialog(params));
+        return icon;
+      }
     },
   ];
+
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
     this.rowData = JSON.parse(JSON.stringify(this.initData));
@@ -157,5 +168,17 @@ export class LmComponent {
 
   onFilter() {
     this.rowData = this.initData.filter(i => i.state === this.selectedEtat || this.selectedEtat === 'Tous');
+  }
+
+  openConfirmDialog(params: any): void {
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const rowIndex = params.rowIndex;
+        params.api.applyTransaction({ remove: [params.node.data] });
+        console.log('Deleted item at row index:', rowIndex);
+      }
+    });
   }
 }
