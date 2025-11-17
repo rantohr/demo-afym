@@ -50,7 +50,9 @@ export class LmComponent {
       creationDate: '2025-01-15',
       state: 'Signé',
       signatureDate: '2025-01-18',
-      amount: 120.00
+      amount: 120.00,
+      reminderInterval: 20,
+      mailModel: 'Modèle 01',
     },
     {
       clientNumber: '002',
@@ -58,7 +60,9 @@ export class LmComponent {
       creationDate: '2025-02-20',
       state: 'Signé',
       signatureDate: '2025-02-22',
-      amount: 450.00
+      amount: 450.00,
+      reminderInterval: 20,
+      mailModel: 'Modèle 01',
     },
     {
       clientNumber: '003',
@@ -66,7 +70,9 @@ export class LmComponent {
       creationDate: '2025-03-05',
       state: 'En attente',
       signatureDate: '2025-03-07',
-      amount: 900.00
+      amount: 900.00,
+      reminderInterval: 20,
+      mailModel: 'Modèle 01',
     },
     {
       clientNumber: '004',
@@ -74,7 +80,9 @@ export class LmComponent {
       creationDate: '2025-04-10',
       state: 'Perdu',
       signatureDate: '2025-04-12',
-      amount: 300.00
+      amount: 300.00,
+      reminderInterval: 20,
+      mailModel: 'Modèle 01',
     },
     {
       clientNumber: '005',
@@ -82,7 +90,9 @@ export class LmComponent {
       creationDate: '2025-05-01',
       state: 'En attente',
       signatureDate: '2025-05-03',
-      amount: 700.00
+      amount: 700.00,
+      reminderInterval: 20,
+      mailModel: 'Modèle 01',
     }
   ];
 
@@ -193,7 +203,7 @@ export class LmComponent {
 
   openEditDialog(params: any): void {
     const dialogRef = this.dialog.open(EditLmDialogComponent, {
-      data: params.data
+      data: this.initData.find(d => d.clientNumber === params.data.clientNumber)
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -219,8 +229,12 @@ export class LmComponent {
   imports: [CommonModule, MatButtonModule, GenericFormComponent],
   template: `
     <div class="edit-dialog">
-        <h3>Modification de lettre de mission</h3>
-        <app-generic-form [fields]="formFields" (submitForm)="handleForm($event)"></app-generic-form>
+      <h3>Modification de lettre de mission</h3>
+      <!-- <h3>Informations</h3> -->
+      <app-generic-form [fields]="formFields" (submitForm)="handleForm($event)"></app-generic-form>
+      <!-- <br><hr>
+      <h3>Paramétrage de mail de relance</h3>
+      <app-generic-form style="width: -webkit-fill-available;" [fields]="mailFormFields" (submitForm)="handleMailForm($event)"></app-generic-form> -->
     </div>
   `,
   styleUrls: ['./lm.component.scss']
@@ -258,9 +272,30 @@ export class EditLmDialogComponent {
       options: [
         { value: "Signé", label: "Signé" },
         { value: "En attente", label: "En attente" },
-        { value: "Refusé", label: "Refusé" }
+        { value: "Perdu", label: "Perdu" }
       ]
     },
+  ];
+
+  mailFormFields: FormField[] = [
+    {
+      name: "reminderInterval",
+      label: "Interval de Relance (en j)",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "mailModel",
+      label: "Modèle de mail",
+      type: "select",
+      required: true,
+      options: [
+        { value: "Modèle 01", label: "Modèle 01" },
+        { value: "Modèle 02", label: "Modèle 02" },
+        { value: "Modèle 03", label: "Modèle 03" },
+      ]
+    },
+    { name: '', type: 'ghost' },
   ];
 
   @ViewChild('firstInput') firstInput!: ElementRef;
@@ -268,8 +303,10 @@ export class EditLmDialogComponent {
   constructor(public dialogRef: MatDialogRef<EditLmDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     for (let key in data) {
       const idx = this.formFields.findIndex(e => e.name === key);
-      if (Object.hasOwn(data, key) && idx > -1) {
-        this.formFields[idx].value = data[key];
+      const idx2 = this.mailFormFields.findIndex(e => e.name === key);
+      if (Object.hasOwn(data, key)) {
+        if (idx > -1) this.formFields[idx].value = data[key];
+        else if (idx2 > -1) this.mailFormFields[idx2].value = data[key];
       }
     }
   }
@@ -283,6 +320,10 @@ export class EditLmDialogComponent {
   }
 
   handleForm(data: any) {
+    console.log('Form submitted:', data);
+  }
+
+  handleMailForm(data: any) {
     console.log('Form submitted:', data);
   }
 }

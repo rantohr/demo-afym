@@ -7,7 +7,16 @@
 </div>
 <h1>Création de lettre de mission</h1>
 
+<!-- <h3>Informations</h3> -->
 <app-generic-form
-  [fields]="formFields"
-  (submitForm)="handleForm($event)"
+[fields]="formFields"
+(submitForm)="handleForm($event)"
 ></app-generic-form>
+
+<!-- <br>
+<hr>
+<h3>Paramétrage de mail de relance</h3>
+<app-generic-form
+[fields]="mailFormFields"
+(submitForm)="handleMailForm($event)"
+></app-generic-form> -->

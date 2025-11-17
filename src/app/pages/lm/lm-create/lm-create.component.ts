@@ -36,6 +36,7 @@ export class LmCreateComponent {
       label: "Montant HT",
       type: "number",
     },
+    { name: '', type: 'ghost' },
     {
       name: "state",
       label: "Etat",
@@ -44,11 +45,30 @@ export class LmCreateComponent {
       options: [
         { value: "Signé", label: "Signé" },
         { value: "En attente", label: "En attente" },
-        { value: "Refusé", label: "Refusé" }
+        { value: "Perdu", label: "Perdu" }
       ]
     },
   ];
 
+  mailFormFields: FormField[] = [
+    {
+      name: "reminderInterval",
+      label: "Interval de Relance (en j)",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "mailModel",
+      label: "Modèle de mail",
+      type: "select",
+      required: true,
+      options: [
+        { value: "Modèle 01", label: "Modèle 01" },
+        { value: "Modèle 02", label: "Modèle 02" },
+        { value: "Modèle 03", label: "Modèle 03" },
+      ]
+    },
+  ];
 
   constructor(private router: Router) { }
 
@@ -57,6 +77,10 @@ export class LmCreateComponent {
   }
 
   handleForm(data: any) {
+    console.log('Form submitted:', data);
+  }
+  
+  handleMailForm(data: any) {
     console.log('Form submitted:', data);
   }
 }
