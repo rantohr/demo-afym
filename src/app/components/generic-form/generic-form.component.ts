@@ -12,10 +12,11 @@ import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/cor
 
 export interface FormField {
     name: string;
-    type: 'text' | 'number' | 'date' | 'select' | 'checkbox' | 'ghost';
+    type: 'text' | 'number' | 'date' | 'select' | 'checkbox' | 'textarea' | 'ghost';
     label?: string;
     value?: any;
     required?: boolean;
+    fullSize?: boolean;
     options?: { label: string; value: any }[];
 }
 

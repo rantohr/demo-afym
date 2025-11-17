@@ -149,6 +149,17 @@ export class LmComponent {
       filter: "agNumberColumnFilter", flex: 1,
     },
     {
+      field: "send", headerName: "", width: 30,
+      cellRenderer: (params: any) => {
+        const icon = document.createElement('i');
+        icon.classList.add('fa-solid', 'fa-paper-plane');
+        icon.style.cursor = 'pointer';
+        icon.style.color = '#009688';
+        icon.addEventListener('click', () => this.openSendDialog(params));
+        return icon;
+      }
+    },
+    {
       field: "edit", headerName: "", width: 30,
       cellRenderer: (params: any) => {
         const icon = document.createElement('i');
@@ -203,6 +214,18 @@ export class LmComponent {
 
   openEditDialog(params: any): void {
     const dialogRef = this.dialog.open(EditLmDialogComponent, {
+      data: this.initData.find(d => d.clientNumber === params.data.clientNumber)
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // handle me
+      }
+    });
+  }
+  
+  openSendDialog(params: any): void {
+    const dialogRef = this.dialog.open(SendLmDialogComponent, {
       data: this.initData.find(d => d.clientNumber === params.data.clientNumber)
     });
 
@@ -324,6 +347,72 @@ export class EditLmDialogComponent {
   }
 
   handleMailForm(data: any) {
+    console.log('Form submitted:', data);
+  }
+}
+
+@Component({
+  selector: 'app-send-lm-dialog',
+  standalone: true,
+  imports: [CommonModule, MatButtonModule, GenericFormComponent],
+  template: `
+    <div class="send-dialog">
+      <h3>Faire signer un document</h3>
+      <h4><i class="fa-regular fa-envelope"></i> Signature à distance / e-mail + SMS</h4>
+      <app-generic-form [fields]="formFields" (submitForm)="handleForm($event)"></app-generic-form>
+    </div>
+  `,
+  styleUrls: ['./lm.component.scss']
+})
+export class SendLmDialogComponent {
+  formFields: FormField[] = [
+    {
+      name: "email",
+      label: "Email",
+      value: "eve@afym.eu",
+      type: "text",
+      required: true,
+    },
+    {
+      name: "subject",
+      label: "Sujet",
+      value: "Votre document pour signature",
+      type: "text",
+      required: true,
+    },
+    { name: '', type: 'ghost' },
+    {
+      name: "body",
+      label: "Corps",
+      value: `Vous êtes signataire du document ci-après.\nMerci de bien vouloir le signer électroniquement en cliquant sur le lien ci-dessous.\nCordialement,`,
+      type: "textarea",
+      required: true,
+      fullSize: true
+    },
+    {
+      name: "mobile",
+      label: "Mobile",
+      type: "text",
+    },
+    {
+      name: "sms",
+      label: "Notifier le signataire par SMS",
+      type: "checkbox",
+    },
+  ];
+
+  constructor(public dialogRef: MatDialogRef<EditLmDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+  }
+
+  onCancel(): void {
+    this.dialogRef.close(false);
+  }
+
+  onConfirm(): void {
+    this.dialogRef.close(true);
+  }
+
+  handleForm(data: any) {
     console.log('Form submitted:', data);
   }
 }
