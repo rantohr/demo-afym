@@ -4,6 +4,8 @@ import { Router, RouterOutlet } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-root',
@@ -65,7 +67,9 @@ export class AppComponent {
 
   activeMenu: any = this.sidebarItems[0];
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, public dialog: MatDialog) {
+    setTimeout(() => this.openReminderDialog(), 3000);
+  }
 
   toggleCrm() {
     this.showCrm = !this.showCrm;
@@ -76,5 +80,51 @@ export class AppComponent {
     if (item.disabled) return;
     this.activeMenu = item;
     this.router.navigate([item.link]);
+  }
+
+  openReminderDialog(): void {
+    const dialogRef = this.dialog.open(ReminderDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // handle me
+      }
+    });
+  }
+}
+
+
+@Component({
+  selector: 'app-reminder-dialog',
+  standalone: true,
+  imports: [CommonModule, MatButtonModule],
+  template: `
+    <div class="reminder-dialog">
+        <h3>Confirmation de mail de relance</h3>
+        <i class="fa-solid fa-circle-info"></i>
+        <div>
+            Un e-mail de relance concernant la facture FAC-2025-01-S1FR4 du client Tiffany & Co va être envoyé.
+        </div>
+        <div>
+            Souhaitez-vous poursuivre ?
+        </div>
+        <div style="margin-top: 1em;">
+            <button mat-raised-button (click)="onCancel()" style="margin-right: 1em">Annuler</button>
+            <button mat-raised-button class="confirm-btn" (click)="onConfirm()">Confirmer</button>
+        </div>
+    </div>
+  `,
+  styleUrls: ['./app.component.scss']
+})
+export class ReminderDialogComponent {
+
+  constructor(public dialogRef: MatDialogRef<ReminderDialogComponent>) { }
+
+  onCancel(): void {
+    this.dialogRef.close(false);
+  }
+
+  onConfirm(): void {
+    this.dialogRef.close(true);
   }
 }
