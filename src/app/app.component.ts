@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
@@ -66,6 +66,13 @@ export class AppComponent {
   ];
 
   activeMenu: any = this.sidebarItems[0];
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.key.toLowerCase() === 'm') {
+      this.openReminderDialog();
+    }
+  }
 
   constructor(private router: Router, public dialog: MatDialog) {
     setTimeout(() => this.openReminderDialog(), 3000);
