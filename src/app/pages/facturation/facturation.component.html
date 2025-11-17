@@ -1,0 +1,27 @@
+<div class="navigator">
+  <i class="fa-solid fa-house"></i>
+  <i class="fa-solid fa-chevron-right"></i>
+  <span (click)="navigate()">Facturation</span>
+</div>
+<h1>Facturation</h1>
+
+<mat-tab-group>
+  <mat-tab *ngFor="let item of missions" [label]="item">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <mat-form-field appearance="outline" style="margin-top: 1em;">
+        <mat-label>Filtre par état</mat-label>
+        <mat-select [(ngModel)]="selectedEtat" (selectionChange)="onFilter()">
+          @for (item of states; track item) {
+          <mat-option [value]="item">{{item}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <button mat-flat-button color="primary" (click)="create()">Créer une facture</button>
+    </div>
+    <div class="grid-container">
+      <ag-grid-angular [rowData]="rowData" [columnDefs]="colDefs" [pagination]="true" [paginationPageSize]="20"
+        [rowHeight]="50" [domLayout]="'autoHeight'" [gridOptions]="gridOptions" [localeText]="localeText"
+        [theme]="theme" (gridReady)="onGridReady($event)" style="width: 100%;" />
+    </div>
+  </mat-tab>
+</mat-tab-group>

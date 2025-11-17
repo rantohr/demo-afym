@@ -1,0 +1,22 @@
+<div class="navigator">
+  <i class="fa-solid fa-house"></i>
+  <i class="fa-solid fa-chevron-right"></i>
+  <span (click)="navigate()">Facturation</span>
+  <i class="fa-solid fa-chevron-right"></i>
+  <span>Création de facture</span>
+</div>
+<h1>Création de facture</h1>
+
+<h3>Informations</h3>
+<app-generic-form
+[fields]="formFields"
+(submitForm)="handleForm($event)"
+></app-generic-form>
+
+<br>
+<hr>
+<h3>Paramétrage de mail de relance</h3>
+<app-generic-form
+[fields]="mailFormFields"
+(submitForm)="handleMailForm($event)"
+></app-generic-form>

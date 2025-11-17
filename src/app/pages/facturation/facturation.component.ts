@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AgGridAngular } from 'ag-grid-angular';
 import type { ColDef, GetRowIdFunc, GetRowIdParams, GridApi, GridOptions, GridReadyEvent, Theme } from 'ag-grid-community';
@@ -17,13 +17,13 @@ import { FormField, GenericFormComponent } from '../../components/generic-form/g
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 @Component({
-  selector: 'app-lm',
+  selector: 'app-facturation',
   standalone: true,
   imports: [CommonModule, AgGridAngular, FormsModule, MatFormFieldModule, MatSelectModule, MatTabsModule, MatButtonModule],
-  templateUrl: './lm.component.html',
-  styleUrl: './lm.component.scss'
+  templateUrl: './facturation.component.html',
+  styleUrl: './facturation.component.scss'
 })
-export class LmComponent {
+export class FacturationComponent {
   selectedEtat = 'Tous';
   states = ['Tous', 'Signé', 'En attente', 'Perdu'];
   missions = ['Comptable', 'Fiscale', 'Sociale', 'Juridique', 'Exceptionnelle'];
@@ -213,7 +213,7 @@ export class LmComponent {
   }
 
   openEditDialog(params: any): void {
-    const dialogRef = this.dialog.open(EditLmDialogComponent, {
+    const dialogRef = this.dialog.open(EditFacturationDialogComponent, {
       data: this.initData.find(d => d.clientNumber === params.data.clientNumber)
     });
 
@@ -223,9 +223,9 @@ export class LmComponent {
       }
     });
   }
-  
+
   openSendDialog(params: any): void {
-    const dialogRef = this.dialog.open(SendLmDialogComponent, {
+    const dialogRef = this.dialog.open(SendFacturationDialogComponent, {
       data: this.initData.find(d => d.clientNumber === params.data.clientNumber)
     });
 
@@ -237,32 +237,32 @@ export class LmComponent {
   }
 
   create() {
-    this.router.navigate(['/creation-lettre-de-mission']);
+    this.router.navigate(['/creation-facturation']);
   }
 
   navigate() {
-    this.router.navigate(['/lettre-de-mission']);
+    this.router.navigate(['/facturation']);
   }
 }
 
 
 @Component({
-  selector: 'app-edit-lm-dialog',
+  selector: 'app-edit-facturation-dialog',
   standalone: true,
   imports: [CommonModule, MatButtonModule, GenericFormComponent],
   template: `
     <div class="edit-dialog">
-      <h3>Modification de lettre de mission</h3>
-      <!-- <h3>Informations</h3> -->
+      <h3>Modification de facture</h3>
+      <h3>Informations</h3>
       <app-generic-form [fields]="formFields" (submitForm)="handleForm($event)"></app-generic-form>
-      <!-- <br><hr>
+      <br><hr>
       <h3>Paramétrage de mail de relance</h3>
-      <app-generic-form style="width: -webkit-fill-available;" [fields]="mailFormFields" (submitForm)="handleMailForm($event)"></app-generic-form> -->
+      <app-generic-form style="width: -webkit-fill-available;" [fields]="mailFormFields" (submitForm)="handleMailForm($event)"></app-generic-form>
     </div>
   `,
-  styleUrls: ['./lm.component.scss']
+  styleUrls: ['./facturation.component.scss']
 })
-export class EditLmDialogComponent {
+export class EditFacturationDialogComponent {
   formFields: FormField[] = [
     {
       name: "clientNumber",
@@ -323,7 +323,7 @@ export class EditLmDialogComponent {
 
   @ViewChild('firstInput') firstInput!: ElementRef;
 
-  constructor(public dialogRef: MatDialogRef<EditLmDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(public dialogRef: MatDialogRef<EditFacturationDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     for (let key in data) {
       const idx = this.formFields.findIndex(e => e.name === key);
       const idx2 = this.mailFormFields.findIndex(e => e.name === key);
@@ -352,19 +352,18 @@ export class EditLmDialogComponent {
 }
 
 @Component({
-  selector: 'app-send-lm-dialog',
+  selector: 'app-send-facturation-dialog',
   standalone: true,
   imports: [CommonModule, MatButtonModule, GenericFormComponent],
   template: `
     <div class="send-dialog">
-      <h3>Faire signer un document</h3>
-      <h4><i class="fa-regular fa-envelope"></i> Signature à distance / e-mail + SMS</h4>
+      <h3>Envoi de mail de relance</h3>
       <app-generic-form [fields]="formFields" (submitForm)="handleForm($event)"></app-generic-form>
     </div>
   `,
-  styleUrls: ['./lm.component.scss']
+  styleUrls: ['./facturation.component.scss']
 })
-export class SendLmDialogComponent {
+export class SendFacturationDialogComponent {
   formFields: FormField[] = [
     {
       name: "email",
@@ -401,7 +400,7 @@ export class SendLmDialogComponent {
     },
   ];
 
-  constructor(public dialogRef: MatDialogRef<SendLmDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(public dialogRef: MatDialogRef<SendFacturationDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
   onCancel(): void {
