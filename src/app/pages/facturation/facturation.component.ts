@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, Inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AgGridAngular } from 'ag-grid-angular';
 import type { ColDef, GetRowIdFunc, GetRowIdParams, GridApi, GridOptions, GridReadyEvent, Theme } from 'ag-grid-community';
@@ -13,6 +13,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { FormField, GenericFormComponent } from '../../components/generic-form/generic-form.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -24,6 +25,8 @@ ModuleRegistry.registerModules([AllCommunityModule]);
   styleUrl: './facturation.component.scss'
 })
 export class FacturationComponent {
+  private _snackBar = inject(MatSnackBar);
+
   selectedEtat = 'Tous';
   states = ['Tous', 'Payée', 'Brouillon', 'Envoyée', 'Perdu'];
   missions = ['Comptable', 'Fiscale', 'Sociale', 'Juridique', 'Exceptionnelle'];
@@ -272,16 +275,17 @@ export class FacturationComponent {
         const rowIndex = params.rowIndex;
         params.api.applyTransaction({ remove: [params.node.data] });
         console.log('Deleted item at row index:', rowIndex);
+        this._snackBar.open("Facture suprimmée ✅", undefined, { duration: 4000, horizontalPosition: "right", verticalPosition: "bottom" });
       }
     });
   }
-  
+
   openParamDialog(): void {
     const dialogRef = this.dialog.open(ParamFacturationDialogComponent);
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // Do something
+        this._snackBar.open("Vos modifications ont bien été enregistrées ✅", undefined, { duration: 4000, horizontalPosition: "right", verticalPosition: "bottom" });
       }
     });
   }
@@ -293,7 +297,7 @@ export class FacturationComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // handle me
+        this._snackBar.open("Vos modifications ont bien été enregistrées ✅", undefined, { duration: 4000, horizontalPosition: "right", verticalPosition: "bottom" });
       }
     });
   }
@@ -305,7 +309,7 @@ export class FacturationComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // handle me
+        this._snackBar.open("Email envoyé ✅", undefined, { duration: 4000, horizontalPosition: "right", verticalPosition: "bottom" });
       }
     });
   }
@@ -432,10 +436,12 @@ export class EditFacturationDialogComponent {
 
   handleForm(data: any) {
     console.log('Form submitted:', data);
+    this.onConfirm();
   }
 
   handleMailForm(data: any) {
     console.log('Form submitted:', data);
+    this.onConfirm();
   }
 }
 
@@ -514,6 +520,7 @@ export class SendFacturationDialogComponent {
 
   handleForm(data: any) {
     console.log('Form submitted:', data);
+    this.onConfirm();
   }
 }
 
@@ -573,5 +580,6 @@ export class ParamFacturationDialogComponent {
 
   handleForm(data: any) {
     console.log('Form submitted:', data);
+    this.onConfirm();
   }
 }

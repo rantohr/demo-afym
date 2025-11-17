@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormField, GenericFormComponent } from '../../../components/generic-form/generic-form.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-facturation-create',
@@ -11,6 +12,7 @@ import { FormField, GenericFormComponent } from '../../../components/generic-for
   styleUrl: '../facturation.component.scss'
 })
 export class FacturationCreateComponent {
+  private _snackBar = inject(MatSnackBar);
 
   formFields: FormField[] = [
     {
@@ -92,6 +94,8 @@ export class FacturationCreateComponent {
 
   handleForm(data: any) {
     console.log('Form submitted:', data);
+    this._snackBar.open("Facture créée ✅", undefined, { duration: 4000, horizontalPosition: "right", verticalPosition: "bottom" });
+    this.router.navigate(['/facturation']);
   }
 
   handleMailForm(data: any) {

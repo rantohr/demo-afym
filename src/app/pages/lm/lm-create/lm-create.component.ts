@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormField, GenericFormComponent } from '../../../components/generic-form/generic-form.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-lm-create',
@@ -11,6 +12,7 @@ import { FormField, GenericFormComponent } from '../../../components/generic-for
   styleUrl: '../lm.component.scss'
 })
 export class LmCreateComponent {
+  private _snackBar = inject(MatSnackBar);
 
   formFields: FormField[] = [
     {
@@ -76,9 +78,11 @@ export class LmCreateComponent {
   navigate() {
     this.router.navigate(['/lettre-de-mission']);
   }
-
+  
   handleForm(data: any) {
     console.log('Form submitted:', data);
+    this._snackBar.open("Lettre de mission créée ✅", undefined, { duration: 4000, horizontalPosition: "right", verticalPosition: "bottom" });
+    this.router.navigate(['/lettre-de-mission']);
   }
 
   handleMailForm(data: any) {

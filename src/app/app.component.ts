@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 export class AppComponent {
   showMenu = true;
   showCrm = true;
+
+  private _snackBar = inject(MatSnackBar);
 
   sidebarItems = [
     {
@@ -94,7 +97,7 @@ export class AppComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // handle me
+        this._snackBar.open("Email envoyé ✅", undefined, { duration: 4000, horizontalPosition: "right" });
       }
     });
   }

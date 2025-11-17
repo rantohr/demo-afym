@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, Inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AgGridAngular } from 'ag-grid-angular';
 import type { ColDef, GetRowIdFunc, GetRowIdParams, GridApi, GridOptions, GridReadyEvent, Theme } from 'ag-grid-community';
@@ -13,6 +13,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { FormField, GenericFormComponent } from '../../components/generic-form/generic-form.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -24,6 +25,8 @@ ModuleRegistry.registerModules([AllCommunityModule]);
   styleUrl: './lm.component.scss'
 })
 export class LmComponent {
+  private _snackBar = inject(MatSnackBar);
+  
   selectedEtat = 'Tous';
   states = ['Tous', 'Signé', 'En attente', 'Perdu'];
   missions = ['Comptable', 'Fiscale', 'Sociale', 'Juridique', 'Exceptionnelle'];
@@ -213,6 +216,7 @@ export class LmComponent {
         const rowIndex = params.rowIndex;
         params.api.applyTransaction({ remove: [params.node.data] });
         console.log('Deleted item at row index:', rowIndex);
+        this._snackBar.open("Lettre de mission supprimée ✅", undefined, { duration: 4000, horizontalPosition: "right", verticalPosition: "bottom" });
       }
     });
   }
@@ -224,7 +228,7 @@ export class LmComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // handle me
+        this._snackBar.open("Vos modifications ont bien été enregistrées ✅", undefined, { duration: 4000, horizontalPosition: "right", verticalPosition: "bottom" });
       }
     });
   }
@@ -236,7 +240,7 @@ export class LmComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // handle me
+        this._snackBar.open("Email envoyé et document généré ✅", undefined, { duration: 4000, horizontalPosition: "right", verticalPosition: "bottom" });
       }
     });
   }
@@ -323,10 +327,7 @@ export class EditLmDialogComponent {
 
   handleForm(data: any) {
     console.log('Form submitted:', data);
-  }
-
-  handleMailForm(data: any) {
-    console.log('Form submitted:', data);
+    this.onConfirm();
   }
 }
 
@@ -393,5 +394,6 @@ export class SendLmDialogComponent {
 
   handleForm(data: any) {
     console.log('Form submitted:', data);
+    this.onConfirm();
   }
 }

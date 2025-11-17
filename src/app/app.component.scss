@@ -124,3 +124,13 @@
         background-color: var(--primary-color);
     }
 }
+
+::ng-deep .mdc-snackbar__surface {
+    background-color: white !important;
+    border: 1px solid var(--accent-color) !important;
+    border-radius: 8px !important;
+}
+
+::ng-deep .mdc-snackbar__surface * {
+    color: var(--grey) !important;
+}
