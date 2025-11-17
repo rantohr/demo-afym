@@ -14,40 +14,54 @@ export class FacturationCreateComponent {
 
   formFields: FormField[] = [
     {
-      name: "clientNumber",
-      label: "N° Client",
-      type: "number",
+      name: "billNumber",
+      label: "N° Facture",
+      type: "select",
       required: true,
+      options: [
+        { value: "FAC-2025-001", label: "FAC-2025-001" },
+        { value: "FAC-2025-002", label: "FAC-2025-002" },
+        { value: "FAC-2025-003", label: "FAC-2025-003" },
+      ]
     },
     {
       name: "clientName",
       label: "Client",
-      type: "text",
-      required: true,
-    },
-    { name: '', type: 'ghost' },
-    {
-      name: "signatureDate",
-      label: "Date de signature",
-      type: "date",
-    },
-    {
-      name: "amount",
-      label: "Montant HT",
-      type: "number",
-    },
-    { name: '', type: 'ghost' },
-    {
-      name: "state",
-      label: "Etat",
       type: "select",
       required: true,
       options: [
-        { value: "Signé", label: "Signé" },
-        { value: "En attente", label: "En attente" },
-        { value: "Perdu", label: "Perdu" }
+        { value: "Dupont SA", label: "Dupont SA" },
+        { value: "Alpha Consulting", label: "Alpha Consulting" },
+        { value: "Martin & Co", label: "Martin & Co" },
+        { value: "TechVision", label: "TechVision" }
       ]
     },
+    { name: "", type: "ghost" },
+    {
+      name: "amountHT",
+      label: "Montant HT",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "amountTTC",
+      label: "Montant TTC",
+      type: "number",
+      required: true,
+    },
+    { name: "", type: "ghost" },
+    {
+      name: "state",
+      label: "État",
+      type: "select",
+      required: true,
+      options: [
+        { value: "Payée", label: "Payée" },
+        { value: "Brouillon", label: "Brouillon" },
+        { value: "Envoyée", label: "Envoyée" },
+        { value: "Perdu", label: "Perdu" }
+      ]
+    }
   ];
 
   mailFormFields: FormField[] = [
@@ -79,7 +93,7 @@ export class FacturationCreateComponent {
   handleForm(data: any) {
     console.log('Form submitted:', data);
   }
-  
+
   handleMailForm(data: any) {
     console.log('Form submitted:', data);
   }

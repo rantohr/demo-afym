@@ -14,17 +14,18 @@ export class LmCreateComponent {
 
   formFields: FormField[] = [
     {
-      name: "clientNumber",
-      label: "N° Client",
-      type: "number",
-      required: true,
-    },
-    {
       name: "clientName",
       label: "Client",
-      type: "text",
+      type: "select",
       required: true,
+      options: [
+        { value: "Dupont SA", label: "Dupont SA" },
+        { value: "Alpha Consulting", label: "Alpha Consulting" },
+        { value: "Martin & Co", label: "Martin & Co" },
+        { value: "TechVision", label: "TechVision" }
+      ]
     },
+    { name: '', type: 'ghost' },
     { name: '', type: 'ghost' },
     {
       name: "signatureDate",
@@ -79,7 +80,7 @@ export class LmCreateComponent {
   handleForm(data: any) {
     console.log('Form submitted:', data);
   }
-  
+
   handleMailForm(data: any) {
     console.log('Form submitted:', data);
   }

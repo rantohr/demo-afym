@@ -45,8 +45,9 @@ export class LmComponent {
 
   initData = [
     {
+      id: '112',
       clientNumber: '001',
-      clientName: 'Client A',
+      clientName: 'Alpha Consulting',
       creationDate: '2025-01-15',
       state: 'Signé',
       signatureDate: '2025-01-18',
@@ -55,8 +56,9 @@ export class LmComponent {
       mailModel: 'Modèle 01',
     },
     {
+      id: '113',
       clientNumber: '002',
-      clientName: 'Client B',
+      clientName: 'Dupont SA',
       creationDate: '2025-02-20',
       state: 'Signé',
       signatureDate: '2025-02-22',
@@ -65,8 +67,9 @@ export class LmComponent {
       mailModel: 'Modèle 01',
     },
     {
+      id: '114',
       clientNumber: '003',
-      clientName: 'Client C',
+      clientName: 'Dupont SA',
       creationDate: '2025-03-05',
       state: 'En attente',
       signatureDate: '2025-03-07',
@@ -75,8 +78,9 @@ export class LmComponent {
       mailModel: 'Modèle 01',
     },
     {
+      id: '116',
       clientNumber: '004',
-      clientName: 'Client D',
+      clientName: 'Alpha Consulting',
       creationDate: '2025-04-10',
       state: 'Perdu',
       signatureDate: '2025-04-12',
@@ -85,8 +89,9 @@ export class LmComponent {
       mailModel: 'Modèle 01',
     },
     {
+      id: '117',
       clientNumber: '005',
-      clientName: 'Client E',
+      clientName: 'Martin & Co',
       creationDate: '2025-05-01',
       state: 'En attente',
       signatureDate: '2025-05-03',
@@ -214,7 +219,7 @@ export class LmComponent {
 
   openEditDialog(params: any): void {
     const dialogRef = this.dialog.open(EditLmDialogComponent, {
-      data: this.initData.find(d => d.clientNumber === params.data.clientNumber)
+      data: this.initData.find(d => d.id === params.data.id)
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -223,10 +228,10 @@ export class LmComponent {
       }
     });
   }
-  
+
   openSendDialog(params: any): void {
     const dialogRef = this.dialog.open(SendLmDialogComponent, {
-      data: this.initData.find(d => d.clientNumber === params.data.clientNumber)
+      data: this.initData.find(d => d.id === params.data.id)
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -253,11 +258,7 @@ export class LmComponent {
   template: `
     <div class="edit-dialog">
       <h3>Modification de lettre de mission</h3>
-      <!-- <h3>Informations</h3> -->
       <app-generic-form [fields]="formFields" (submitForm)="handleForm($event)"></app-generic-form>
-      <!-- <br><hr>
-      <h3>Paramétrage de mail de relance</h3>
-      <app-generic-form style="width: -webkit-fill-available;" [fields]="mailFormFields" (submitForm)="handleMailForm($event)"></app-generic-form> -->
     </div>
   `,
   styleUrls: ['./lm.component.scss']
@@ -265,17 +266,18 @@ export class LmComponent {
 export class EditLmDialogComponent {
   formFields: FormField[] = [
     {
-      name: "clientNumber",
-      label: "N° Client",
-      type: "number",
-      required: true,
-    },
-    {
       name: "clientName",
       label: "Client",
-      type: "text",
+      type: "select",
       required: true,
+      options: [
+        { value: "Dupont SA", label: "Dupont SA" },
+        { value: "Alpha Consulting", label: "Alpha Consulting" },
+        { value: "Martin & Co", label: "Martin & Co" },
+        { value: "TechVision", label: "TechVision" }
+      ]
     },
+    { name: '', type: 'ghost' },
     { name: '', type: 'ghost' },
     {
       name: "signatureDate",
@@ -300,36 +302,13 @@ export class EditLmDialogComponent {
     },
   ];
 
-  mailFormFields: FormField[] = [
-    {
-      name: "reminderInterval",
-      label: "Interval de Relance (en j)",
-      type: "number",
-      required: true,
-    },
-    {
-      name: "mailModel",
-      label: "Modèle de mail",
-      type: "select",
-      required: true,
-      options: [
-        { value: "Modèle 01", label: "Modèle 01" },
-        { value: "Modèle 02", label: "Modèle 02" },
-        { value: "Modèle 03", label: "Modèle 03" },
-      ]
-    },
-    { name: '', type: 'ghost' },
-  ];
-
   @ViewChild('firstInput') firstInput!: ElementRef;
 
   constructor(public dialogRef: MatDialogRef<EditLmDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     for (let key in data) {
       const idx = this.formFields.findIndex(e => e.name === key);
-      const idx2 = this.mailFormFields.findIndex(e => e.name === key);
       if (Object.hasOwn(data, key)) {
         if (idx > -1) this.formFields[idx].value = data[key];
-        else if (idx2 > -1) this.mailFormFields[idx2].value = data[key];
       }
     }
   }

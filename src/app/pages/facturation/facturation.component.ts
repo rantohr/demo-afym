@@ -25,7 +25,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 })
 export class FacturationComponent {
   selectedEtat = 'Tous';
-  states = ['Tous', 'Signé', 'En attente', 'Perdu'];
+  states = ['Tous', 'Payée', 'Brouillon', 'Envoyée', 'Perdu'];
   missions = ['Comptable', 'Fiscale', 'Sociale', 'Juridique', 'Exceptionnelle'];
 
   theme: Theme | "legacy" = themeQuartz.withParams({
@@ -45,54 +45,114 @@ export class FacturationComponent {
 
   initData = [
     {
-      clientNumber: '001',
-      clientName: 'Client A',
-      creationDate: '2025-01-15',
-      state: 'Signé',
-      signatureDate: '2025-01-18',
-      amount: 120.00,
-      reminderInterval: 20,
-      mailModel: 'Modèle 01',
+      id: 1,
+      creationDate: "2025-01-12",
+      billNumber: "FAC-2025-001",
+      clientName: "Dupont SA",
+      amountHT: 1200,
+      amountTTC: 1440,
+      state: "Payée",
+      reminderInterval: 15,
+      mailModel: "Modèle 01"
     },
     {
-      clientNumber: '002',
-      clientName: 'Client B',
-      creationDate: '2025-02-20',
-      state: 'Signé',
-      signatureDate: '2025-02-22',
-      amount: 450.00,
-      reminderInterval: 20,
-      mailModel: 'Modèle 01',
+      id: 2,
+      creationDate: "2025-01-15",
+      billNumber: "FAC-2025-002",
+      clientName: "Alpha Consulting",
+      amountHT: 850,
+      amountTTC: 1020,
+      state: "Envoyée",
+      reminderInterval: 7,
+      mailModel: "Modèle 02"
     },
     {
-      clientNumber: '003',
-      clientName: 'Client C',
-      creationDate: '2025-03-05',
-      state: 'En attente',
-      signatureDate: '2025-03-07',
-      amount: 900.00,
-      reminderInterval: 20,
-      mailModel: 'Modèle 01',
+      id: 3,
+      creationDate: "2025-01-20",
+      billNumber: "FAC-2025-003",
+      clientName: "Martin & Co",
+      amountHT: 460,
+      amountTTC: 552,
+      state: "Brouillon",
+      reminderInterval: 0,
+      mailModel: "Modèle 03"
     },
     {
-      clientNumber: '004',
-      clientName: 'Client D',
-      creationDate: '2025-04-10',
-      state: 'Perdu',
-      signatureDate: '2025-04-12',
-      amount: 300.00,
-      reminderInterval: 20,
-      mailModel: 'Modèle 01',
+      id: 4,
+      creationDate: "2025-02-01",
+      billNumber: "FAC-2025-004",
+      clientName: "Société Leroy",
+      amountHT: 2300,
+      amountTTC: 2760,
+      state: "Perdu",
+      reminderInterval: 30,
+      mailModel: "Modèle 01"
     },
     {
-      clientNumber: '005',
-      clientName: 'Client E',
-      creationDate: '2025-05-01',
-      state: 'En attente',
-      signatureDate: '2025-05-03',
-      amount: 700.00,
-      reminderInterval: 20,
-      mailModel: 'Modèle 01',
+      id: 5,
+      creationDate: "2025-02-05",
+      billNumber: "FAC-2025-005",
+      clientName: "TechVision",
+      amountHT: 995,
+      amountTTC: 1194,
+      state: "Envoyée",
+      reminderInterval: 10,
+      mailModel: "Modèle 04"
+    },
+    {
+      id: 6,
+      creationDate: "2025-02-07",
+      billNumber: "FAC-2025-006",
+      clientName: "Bâtiments Durand",
+      amountHT: 1500,
+      amountTTC: 1800,
+      state: "Payée",
+      reminderInterval: 0,
+      mailModel: "Modèle 01"
+    },
+    {
+      id: 7,
+      creationDate: "2025-02-10",
+      billNumber: "FAC-2025-007",
+      clientName: "Gamma Transport",
+      amountHT: 300,
+      amountTTC: 360,
+      state: "Envoyée",
+      reminderInterval: 14,
+      mailModel: "Modèle 02"
+    },
+    {
+      id: 8,
+      creationDate: "2025-02-12",
+      billNumber: "FAC-2025-008",
+      clientName: "Studio Horizon",
+      amountHT: 780,
+      amountTTC: 936,
+      state: "Brouillon",
+      reminderInterval: 0,
+      mailModel: "Modèle 03"
+    },
+    {
+      id: 9,
+      creationDate: "2025-02-14",
+      billNumber: "FAC-2025-009",
+      clientName: "Agence Nova",
+      amountHT: 640,
+      amountTTC: 768,
+      state: "Perdu",
+      reminderInterval: 21,
+      mailModel: "Modèle 04"
+    },
+    {
+      id: 10,
+      creationDate: "2025-02-15",
+      billNumber: "FAC-2025-010",
+      clientName: "Solutions Dumas",
+      amountHT: 1120,
+      amountTTC: 1344,
+      state: "Envoyée",
+      reminderInterval: 5,
+      mailModel: "Modèle 02"
     }
   ];
 
@@ -100,7 +160,11 @@ export class FacturationComponent {
 
   colDefs: ColDef[] = [
     {
-      field: "clientNumber", headerName: "N° Client",
+      field: "creationDate", headerName: "Date de création", cellRenderer: (params: any) => params.value.split('-').reverse().join('/'),
+      filter: "agDateColumnFilter", flex: 1
+    },
+    {
+      field: "billNumber", headerName: "Facture",
       filter: "agTextColumnFilter", flex: 1
     },
     {
@@ -108,8 +172,12 @@ export class FacturationComponent {
       filter: "agTextColumnFilter", flex: 1
     },
     {
-      field: "creationDate", headerName: "Date de création", cellRenderer: (params: any) => params.value.split('-').reverse().join('/'),
-      filter: "agDateColumnFilter", flex: 1
+      field: "amountHT", headerName: "Montant HT", cellRenderer: (params: any) => `${params.value} €`,
+      filter: "agNumberColumnFilter", flex: 1,
+    },
+    {
+      field: "amountTTC", headerName: "Montant TTC", cellRenderer: (params: any) => `${params.value} €`,
+      filter: "agNumberColumnFilter", flex: 1,
     },
     {
       field: "state", headerName: "Etat", flex: 1,
@@ -117,13 +185,17 @@ export class FacturationComponent {
         let color = '#b00000';
         let emoji = '❌';
         switch (params.value) {
-          case 'Signé':
+          case 'Payée':
             color = '#008500';
             emoji = '✅';
             break;
-          case 'En attente':
+          case 'Brouillon':
             color = '#767676';
             emoji = '⌛';
+            break;
+          case 'Envoyée':
+            color = '#ea9029ff';
+            emoji = '📤';
             break;
           default:
             color = '#b00000';
@@ -139,14 +211,6 @@ export class FacturationComponent {
           height: 33px;">${emoji} ${params.value}</span>
         `;
       }
-    },
-    {
-      field: "signatureDate", headerName: "Date de signature", cellRenderer: (params: any) => params.value.split('-').reverse().join('/'),
-      filter: "agDateColumnFilter", flex: 1
-    },
-    {
-      field: "amount", headerName: "Montant HT", cellRenderer: (params: any) => `${params.value} €`,
-      filter: "agNumberColumnFilter", flex: 1,
     },
     {
       field: "send", headerName: "", width: 30,
@@ -214,7 +278,7 @@ export class FacturationComponent {
 
   openEditDialog(params: any): void {
     const dialogRef = this.dialog.open(EditFacturationDialogComponent, {
-      data: this.initData.find(d => d.clientNumber === params.data.clientNumber)
+      data: this.initData.find(d => d.id === params.data.id)
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -226,7 +290,7 @@ export class FacturationComponent {
 
   openSendDialog(params: any): void {
     const dialogRef = this.dialog.open(SendFacturationDialogComponent, {
-      data: this.initData.find(d => d.clientNumber === params.data.clientNumber)
+      data: this.initData.find(d => d.id === params.data.id)
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -265,39 +329,53 @@ export class FacturationComponent {
 export class EditFacturationDialogComponent {
   formFields: FormField[] = [
     {
-      name: "clientNumber",
-      label: "N° Client",
-      type: "number",
+      name: "billNumber",
+      label: "N° Facture",
+      type: "select",
       required: true,
+      options: [
+        { value: "FAC-2025-001", label: "FAC-2025-001" },
+        { value: "FAC-2025-002", label: "FAC-2025-002" },
+        { value: "FAC-2025-003", label: "FAC-2025-003" },
+      ]
     },
     {
       name: "clientName",
       label: "Client",
-      type: "text",
-      required: true,
-    },
-    { name: '', type: 'ghost' },
-    {
-      name: "signatureDate",
-      label: "Date de signature",
-      type: "date",
-    },
-    {
-      name: "amount",
-      label: "Montant HT",
-      type: "number",
-    },
-    {
-      name: "state",
-      label: "Etat",
       type: "select",
       required: true,
       options: [
-        { value: "Signé", label: "Signé" },
-        { value: "En attente", label: "En attente" },
-        { value: "Perdu", label: "Perdu" }
+        { value: "Dupont SA", label: "Dupont SA" },
+        { value: "Alpha Consulting", label: "Alpha Consulting" },
+        { value: "Martin & Co", label: "Martin & Co" },
+        { value: "TechVision", label: "TechVision" }
       ]
     },
+    { name: "", type: "ghost" },
+    {
+      name: "amountHT",
+      label: "Montant HT",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "amountTTC",
+      label: "Montant TTC",
+      type: "number",
+      required: true,
+    },
+    {
+      name: "state",
+      label: "État",
+      type: "select",
+      required: true,
+      options: [
+        { value: "Payée", label: "Payée" },
+        { value: "Brouillon", label: "Brouillon" },
+        { value: "Envoyée", label: "Envoyée" },
+        { value: "Perdu", label: "Perdu" }
+      ]
+    }
   ];
 
   mailFormFields: FormField[] = [
@@ -357,7 +435,7 @@ export class EditFacturationDialogComponent {
   imports: [CommonModule, MatButtonModule, GenericFormComponent],
   template: `
     <div class="send-dialog">
-      <h3>Envoi de mail de relance</h3>
+      <h3>Envoi manuel du mail de relance</h3>
       <app-generic-form [fields]="formFields" (submitForm)="handleForm($event)"></app-generic-form>
     </div>
   `,
@@ -365,6 +443,19 @@ export class EditFacturationDialogComponent {
 })
 export class SendFacturationDialogComponent {
   formFields: FormField[] = [
+    {
+      name: "mailModel",
+      label: "Modèle de mail",
+      type: "select",
+      required: true,
+      options: [
+        { value: "Modèle 01", label: "Modèle 01" },
+        { value: "Modèle 02", label: "Modèle 02" },
+        { value: "Modèle 03", label: "Modèle 03" },
+      ]
+    },
+    { name: '', type: 'ghost' },
+    { name: '', type: 'ghost' },
     {
       name: "email",
       label: "Email",
@@ -375,7 +466,7 @@ export class SendFacturationDialogComponent {
     {
       name: "subject",
       label: "Sujet",
-      value: "Votre document pour signature",
+      value: "Rappel pour le paiement de la facture FAC-2025-001",
       type: "text",
       required: true,
     },
@@ -383,7 +474,7 @@ export class SendFacturationDialogComponent {
     {
       name: "body",
       label: "Corps",
-      value: `Vous êtes signataire du document ci-après.\nMerci de bien vouloir le signer électroniquement en cliquant sur le lien ci-dessous.\nCordialement,`,
+      value: `Bonjour,\nNous n’avons pas encore reçu le règlement de la facture n° [Numéro], arrivée à échéance le [Date].\nPouvez-vous nous confirmer sa prise en charge ?\nCordialement,`,
       type: "textarea",
       required: true,
       fullSize: true
@@ -395,7 +486,7 @@ export class SendFacturationDialogComponent {
     },
     {
       name: "sms",
-      label: "Notifier le signataire par SMS",
+      label: "Notifier le client par SMS",
       type: "checkbox",
     },
   ];
