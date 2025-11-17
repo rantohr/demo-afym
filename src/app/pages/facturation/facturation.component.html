@@ -3,7 +3,10 @@
   <i class="fa-solid fa-chevron-right"></i>
   <span (click)="navigate()">Facturation</span>
 </div>
-<h1>Facturation</h1>
+<div style="display: flex; align-items: center; gap: 1em;">
+  <h1>Facturation</h1>
+  <i style="cursor: pointer; font-size: large;" (click)="openParamDialog()" class="fa-solid fa-gear"></i>
+</div>
 
 <mat-tab-group>
   <mat-tab *ngFor="let item of missions" [label]="item">

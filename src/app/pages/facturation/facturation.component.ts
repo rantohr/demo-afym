@@ -275,6 +275,16 @@ export class FacturationComponent {
       }
     });
   }
+  
+  openParamDialog(): void {
+    const dialogRef = this.dialog.open(ParamFacturationDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Do something
+      }
+    });
+  }
 
   openEditDialog(params: any): void {
     const dialogRef = this.dialog.open(EditFacturationDialogComponent, {
@@ -492,6 +502,65 @@ export class SendFacturationDialogComponent {
   ];
 
   constructor(public dialogRef: MatDialogRef<SendFacturationDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+  }
+
+  onCancel(): void {
+    this.dialogRef.close(false);
+  }
+
+  onConfirm(): void {
+    this.dialogRef.close(true);
+  }
+
+  handleForm(data: any) {
+    console.log('Form submitted:', data);
+  }
+}
+
+@Component({
+  selector: 'app-param-facturation-dialog',
+  standalone: true,
+  imports: [CommonModule, MatButtonModule, GenericFormComponent],
+  template: `
+    <div class="send-dialog" style="width: 500px">
+      <h3>Paramétrage global du mail de relance</h3>
+      <app-generic-form style="width: -webkit-fill-available;" [fields]="formFields" (submitForm)="handleForm($event)"></app-generic-form>
+    </div>
+  `,
+  styleUrls: ['./facturation.component.scss']
+})
+export class ParamFacturationDialogComponent {
+  formFields: FormField[] = [
+    {
+      name: "reminderInterval",
+      label: "Interval de Relance (en j)",
+      type: "number",
+      required: true,
+      value: 20,
+      fullSize: true
+    },
+    {
+      name: "mailModel",
+      label: "Modèle de mail",
+      type: "select",
+      required: true,
+      value: "Modèle 02",
+      fullSize: true,
+      options: [
+        { value: "Modèle 01", label: "Modèle 01" },
+        { value: "Modèle 02", label: "Modèle 02" },
+        { value: "Modèle 03", label: "Modèle 03" },
+      ]
+    },
+    {
+      name: "auto",
+      label: "Désactiver l'envoi automatique des mails de relance",
+      type: "checkbox",
+      fullSize: true
+    },
+  ];
+
+  constructor(public dialogRef: MatDialogRef<ParamFacturationDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
   onCancel(): void {
